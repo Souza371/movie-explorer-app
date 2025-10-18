@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Explorer</string>
+    <string name="search_hint">Buscar filmes...</string>
+    <string name="search_button">Buscar</string>
+    <string name="loading">Carregando...</string>
+    <string name="error_no_internet">Erro de conexão. Verifique sua internet.</string>
+    <string name="error_search_failed">Falha na busca. Tente novamente.</string>
+    <string name="no_results">Nenhum resultado encontrado.</string>
+    <string name="year_label">Ano: %1$s</string>
+</resources>
