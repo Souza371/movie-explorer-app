@@ -17,7 +17,7 @@ class MovieViewModel : ViewModel() {
     
     // IMPORTANTE: Coloque sua chave da API OMDb aqui
     // Obtenha gratuitamente em: https://www.omdbapi.com/apikey.aspx
-    private val apiKey = "YOUR_API_KEY_HERE" // ⚠️ SUBSTITUA PELA SUA CHAVE
+    private val apiKey = "357576b4" // ✅ API Key configurada!
     
     // Estados reativos da UI
     var movies by mutableStateOf<List<Movie>>(emptyList())
