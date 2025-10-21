@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cores primárias para tema de cinema -->
+    <color name="movie_primary">#E50914</color>
+    <color name="movie_primary_variant">#B00020</color>
+    <color name="movie_secondary">#FFD700</color>
+    <color name="movie_secondary_variant">#FFC107</color>
+    
+    <!-- Cores de background -->
+    <color name="movie_background">#121212</color>
+    <color name="movie_surface">#1E1E1E</color>
+    <color name="movie_surface_variant">#2D2D2D</color>
+    
+    <!-- Cores de texto -->
+    <color name="movie_on_primary">#FFFFFF</color>
+    <color name="movie_on_secondary">#000000</color>
+    <color name="movie_on_background">#FFFFFF</color>
+    <color name="movie_on_surface">#FFFFFF</color>
+    
+    <!-- Cores de estado -->
+    <color name="movie_error">#CF6679</color>
+    <color name="movie_on_error">#000000</color>
+    
+    <!-- Cores básicas -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray_light">#FFE0E0E0</color>
+    <color name="gray_dark">#FF424242</color>
+</resources>

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Tema base do Movie Explorer com cores personalizadas -->
     <style name="Base.Theme.MovieExplorer" parent="android:Theme.Holo.Light">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Cores primárias inspiradas em temas de cinema -->
+        <item name="android:colorPrimary">@color/movie_primary</item>
+        <item name="android:colorPrimaryDark">@color/movie_primary_variant</item>
+        <item name="android:colorAccent">@color/movie_secondary</item>
+        
+        <!-- Cores de background -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        
+        <!-- Cores de texto -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/gray_dark</item>
     </style>
 
     <style name="Theme.MovieExplorer" parent="Base.Theme.MovieExplorer" />
