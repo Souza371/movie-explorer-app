@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
@@ -24,8 +23,6 @@ fun SearchBar(
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    
     Card(
         modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -47,19 +44,13 @@ fun SearchBar(
                     imeAction = ImeAction.Search
                 ),
                 keyboardActions = KeyboardActions(
-                    onSearch = {
-                        onSearch()
-                        keyboardController?.hide()
-                    }
+                    onSearch = { onSearch() }
                 ),
                 singleLine = true
             )
             
             Button(
-                onClick = {
-                    onSearch()
-                    keyboardController?.hide()
-                },
+                onClick = onSearch,
                 modifier = Modifier.height(56.dp)
             ) {
                 Icon(

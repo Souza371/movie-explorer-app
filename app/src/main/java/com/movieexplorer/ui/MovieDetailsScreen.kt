@@ -38,7 +38,7 @@ fun MovieDetailsScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = movieDetails.title,
+                    text = movieDetails.title ?: "Filme",
                     maxLines = 1
                 )
             },
@@ -85,7 +85,7 @@ fun MovieDetailsScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = movieDetails.title,
+                        text = movieDetails.title ?: "Título não disponível",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -146,7 +146,7 @@ fun MovieDetailsScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = movieDetails.plot,
+                        text = movieDetails.plot ?: "Sinopse não disponível",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -168,14 +168,14 @@ fun MovieDetailsScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     
-                    DetailRow("Diretor", movieDetails.director)
-                    DetailRow("Roteirista", movieDetails.writer)
-                    DetailRow("Elenco", movieDetails.actors)
-                    DetailRow("Idioma", movieDetails.language)
-                    DetailRow("País", movieDetails.country)
-                    DetailRow("Prêmios", movieDetails.awards)
-                    DetailRow("Classificação", movieDetails.rated)
-                    DetailRow("Lançamento", movieDetails.released)
+                    DetailRow("Diretor", movieDetails.director ?: "N/A")
+                    DetailRow("Roteirista", movieDetails.writer ?: "N/A")
+                    DetailRow("Elenco", movieDetails.actors ?: "N/A")
+                    DetailRow("Idioma", movieDetails.language ?: "N/A")
+                    DetailRow("País", movieDetails.country ?: "N/A")
+                    DetailRow("Prêmios", movieDetails.awards ?: "N/A")
+                    DetailRow("Classificação", movieDetails.rated ?: "N/A")
+                    DetailRow("Lançamento", movieDetails.released ?: "N/A")
                 }
             }
         }
