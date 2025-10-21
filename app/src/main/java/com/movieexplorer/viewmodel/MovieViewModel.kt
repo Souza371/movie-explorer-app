@@ -11,7 +11,16 @@ import com.movieexplorer.network.RetrofitClient
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel para gerenciar o estado da tela principal do app
+ * ViewModel para gerenciar o estado da aplicação Movie Explorer.
+ * 
+ * Responsável por:
+ * - Gerenciar estados de busca, loading e erros
+ * - Fazer chamadas para a API OMDb
+ * - Manter dados de filmes e detalhes
+ * - Validar entrada do usuário
+ * 
+ * @author Vicente
+ * @since 1.0
  */
 class MovieViewModel : ViewModel() {
     
@@ -35,7 +44,9 @@ class MovieViewModel : ViewModel() {
         private set
     
     /**
-     * Atualiza o termo de busca
+     * Atualiza o termo de busca e limpa erros anteriores.
+     * 
+     * @param newQuery Nova string de busca inserida pelo usuário
      */
     fun updateQuery(newQuery: String) {
         query = newQuery
@@ -46,7 +57,13 @@ class MovieViewModel : ViewModel() {
     }
     
     /**
-     * Busca filmes na API OMDb
+     * Busca filmes na API OMDb com validação de entrada.
+     * 
+     * Funcionalidades:
+     * - Valida se a query tem pelo menos 2 caracteres
+     * - Faz trim() para remover espaços
+     * - Trata diferentes tipos de erros de rede
+     * - Atualiza estados reativo de loading e erro
      */
     fun searchMovies() {
         val trimmedQuery = query.trim()
