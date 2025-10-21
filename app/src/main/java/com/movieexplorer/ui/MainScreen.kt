@@ -5,9 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.movieexplorer.R
 import com.movieexplorer.viewmodel.MovieViewModel
 
 /**
@@ -40,7 +43,7 @@ private fun SearchContent(viewModel: MovieViewModel) {
     val errorMessage = viewModel.errorMessage
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Movie Explorer") }) }
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -61,7 +64,7 @@ private fun SearchContent(viewModel: MovieViewModel) {
             // Conteúdo central que muda com base no estado
             when {
                 isLoading -> {
-                    LoadingState("Buscando filmes...")
+                    LoadingState(stringResource(R.string.loading_movies))
                 }
                 errorMessage != null -> {
                     ErrorState(errorMessage)
@@ -89,7 +92,7 @@ private fun DetailsContent(viewModel: MovieViewModel) {
     val isLoadingDetails = viewModel.isLoadingDetails
 
     if (isLoadingDetails) {
-        LoadingState("Carregando detalhes...")
+        LoadingState(stringResource(R.string.loading_details))
     } else if (selectedMovie != null) {
         MovieDetailsScreen(
             movieDetails = selectedMovie,
@@ -125,16 +128,16 @@ private fun InitialState() {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "🎬", style = MaterialTheme.typography.displayLarge)
+            Text(text = stringResource(R.string.welcome_emoji), style = MaterialTheme.typography.displayLarge)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Bem-vindo ao Movie Explorer!",
+                text = stringResource(R.string.welcome_title),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Digite o nome de um filme para começar a busca",
+                text = stringResource(R.string.welcome_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Nome do app -->
     <string name="app_name">Movie Explorer</string>
+    
+    <!-- Tela principal -->
+    <string name="welcome_emoji">🎬</string>
+    <string name="welcome_title">Bem-vindo ao Movie Explorer!</string>
+    <string name="welcome_subtitle">Digite o nome de um filme para começar a busca</string>
+    
+    <!-- Busca -->
     <string name="search_hint">Buscar filmes...</string>
     <string name="search_button">Buscar</string>
+    <string name="search_content_description">Buscar</string>
+    
+    <!-- Estados -->
     <string name="loading">Carregando...</string>
+    <string name="loading_movies">Buscando filmes...</string>
+    <string name="loading_details">Carregando detalhes...</string>
+    
+    <!-- Erros -->
     <string name="error_no_internet">Erro de conexão. Verifique sua internet.</string>
     <string name="error_search_failed">Falha na busca. Tente novamente.</string>
+    <string name="error_loading_details">Erro ao carregar detalhes do filme</string>
+    <string name="error_connection_details">Erro de conexão ao carregar detalhes</string>
     <string name="no_results">Nenhum resultado encontrado.</string>
+    <string name="no_results_for">Nenhum resultado encontrado para \"%1$s\"</string>
+    
+    <!-- Labels de filme -->
     <string name="year_label">Ano: %1$s</string>
+    <string name="duration_label">Duração: %1$s</string>
+    <string name="genre_label">Gênero: %1$s</string>
+    <string name="rating_format">%1$s/10</string>
+    
+    <!-- Detalhes do filme -->
+    <string name="movie_title_fallback">Filme</string>
+    <string name="title_not_available">Título não disponível</string>
+    <string name="synopsis_title">Sinopse</string>
+    <string name="info_title">Informações</string>
+    
+    <!-- Informações detalhadas -->
+    <string name="director_label">Diretor</string>
+    <string name="writer_label">Roteirista</string>
+    <string name="cast_label">Elenco</string>
+    <string name="language_label">Idioma</string>
+    <string name="country_label">País</string>
+    <string name="awards_label">Prêmios</string>
+    <string name="rating_label">Classificação</string>
+    <string name="release_label">Lançamento</string>
+    
+    <!-- Navegação -->
+    <string name="back_button">Voltar</string>
+    <string name="rating_content_description">Avaliação</string>
+    
+    <!-- Content descriptions para acessibilidade -->
+    <string name="poster_content_description">Pôster de %1$s</string>
+    <string name="movie_poster_fallback">Pôster do filme</string>
+    
+    <!-- Valores padrão -->
+    <string name="not_available">N/A</string>
 </resources>
