@@ -19,7 +19,7 @@ O app permite buscar filmes por título, visualizar pôsteres e informações b�
 - ⚡ **Performance**: Carregamento assíncrono de imagens com Coil
 - 🔄 **Estados Reativos**: Interface reativa que responde automaticamente a mudanças
 
-## � Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas
 
 | Tecnologia | Descrição |
 |------------|-----------|
@@ -66,11 +66,11 @@ app/src/main/java/com/movieexplorer/
 
 1. Acesse [https://www.omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx)
 2. Solicite sua chave gratuita (chegará por e-mail)
-3. Abra o arquivo `app/src/main/java/com/movieexplorer/viewmodel/MovieViewModel.kt`
-4. Substitua `YOUR_API_KEY_HERE` pela sua chave:
+3. Abra o arquivo `app/src/main/java/com/movieexplorer/network/RetrofitClient.kt`
+4. Substitua `YOUR_API_KEY` pela sua chave:
 
 ```kotlin
-private val apiKey = "sua_chave_aqui"
+private const val API_KEY = "sua_chave_aqui"
 ```
 
 ### Executando o App

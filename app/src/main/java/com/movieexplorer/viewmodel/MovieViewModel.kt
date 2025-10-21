@@ -15,10 +15,6 @@ import kotlinx.coroutines.launch
  */
 class MovieViewModel : ViewModel() {
     
-    // IMPORTANTE: Coloque sua chave da API OMDb aqui
-    // Obtenha gratuitamente em: https://www.omdbapi.com/apikey.aspx
-    private val apiKey = "357576b4" // ✅ API Key configurada!
-    
     // Estados reativos da UI
     var movies by mutableStateOf<List<Movie>>(emptyList())
         private set
@@ -55,21 +51,12 @@ class MovieViewModel : ViewModel() {
     fun searchMovies() {
         if (query.isBlank()) return
         
-        // Verifica se a API key foi configurada
-        if (apiKey == "YOUR_API_KEY_HERE") {
-            errorMessage = "Configure sua chave da API OMDb no MovieViewModel.kt"
-            return
-        }
-        
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             
             try {
-                val response = RetrofitClient.movieApi.searchMovies(
-                    apiKey = apiKey,
-                    query = query
-                )
+                val response = RetrofitClient.movieApi.searchMovies(query = query)
                 
                 if (response.response == "True") {
                     movies = response.search ?: emptyList()
@@ -93,19 +80,11 @@ class MovieViewModel : ViewModel() {
      * Obtém detalhes completos de um filme
      */
     fun getMovieDetails(imdbId: String) {
-        if (apiKey == "YOUR_API_KEY_HERE") {
-            errorMessage = "Configure sua chave da API OMDb no MovieViewModel.kt"
-            return
-        }
-        
         viewModelScope.launch {
             isLoadingDetails = true
             
             try {
-                val details = RetrofitClient.movieApi.getMovieDetails(
-                    apiKey = apiKey,
-                    imdbId = imdbId
-                )
+                val details = RetrofitClient.movieApi.getMovieDetails(imdbId = imdbId)
                 
                 if (details.response == "True") {
                     selectedMovie = details
