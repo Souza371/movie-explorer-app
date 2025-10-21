@@ -49,14 +49,23 @@ class MovieViewModel : ViewModel() {
      * Busca filmes na API OMDb
      */
     fun searchMovies() {
-        if (query.isBlank()) return
+        val trimmedQuery = query.trim()
+        if (trimmedQuery.isBlank()) {
+            errorMessage = "Digite um título para buscar"
+            return
+        }
+        
+        if (trimmedQuery.length < 2) {
+            errorMessage = "Digite pelo menos 2 caracteres"
+            return
+        }
         
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             
             try {
-                val response = RetrofitClient.movieApi.searchMovies(query = query)
+                val response = RetrofitClient.movieApi.searchMovies(query = trimmedQuery)
                 
                 if (response.response == "True") {
                     movies = response.search ?: emptyList()
@@ -67,8 +76,14 @@ class MovieViewModel : ViewModel() {
                     errorMessage = response.error ?: "Erro na busca"
                     movies = emptyList()
                 }
-            } catch (e: Exception) {
+            } catch (e: java.net.UnknownHostException) {
                 errorMessage = "Erro de conexão. Verifique sua internet."
+                movies = emptyList()
+            } catch (e: java.net.SocketTimeoutException) {
+                errorMessage = "Timeout na conexão. Tente novamente."
+                movies = emptyList()
+            } catch (e: Exception) {
+                errorMessage = "Erro inesperado: ${e.message}"
                 movies = emptyList()
             } finally {
                 isLoading = false
@@ -91,8 +106,12 @@ class MovieViewModel : ViewModel() {
                 } else {
                     errorMessage = "Erro ao carregar detalhes do filme"
                 }
-            } catch (e: Exception) {
+            } catch (e: java.net.UnknownHostException) {
                 errorMessage = "Erro de conexão ao carregar detalhes"
+            } catch (e: java.net.SocketTimeoutException) {
+                errorMessage = "Timeout ao carregar detalhes. Tente novamente."
+            } catch (e: Exception) {
+                errorMessage = "Erro inesperado ao carregar detalhes: ${e.message}"
             } finally {
                 isLoadingDetails = false
             }
