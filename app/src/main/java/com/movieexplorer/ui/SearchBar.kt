@@ -11,7 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.MovieFilter
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -72,7 +72,7 @@ fun SearchBar(
                     singleLine = true,
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.MovieFilter,
+                            imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
