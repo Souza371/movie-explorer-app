@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.movieexplorer.data.Movie
 import com.movieexplorer.data.MovieDetails
 import com.movieexplorer.network.RetrofitClient
+import com.movieexplorer.util.MovieState
+import com.movieexplorer.util.MovieDetailsState
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 /**
  * ViewModel para gerenciar o estado da aplicação Movie Explorer.
@@ -43,6 +46,17 @@ class MovieViewModel : ViewModel() {
     var isLoadingDetails by mutableStateOf(false)
         private set
     
+    // Estados melhorados usando sealed classes
+    var movieState by mutableStateOf<MovieState>(MovieState.Idle)
+        private set
+    
+    var movieDetailsState by mutableStateOf<MovieDetailsState>(MovieDetailsState.Idle)
+        private set
+    
+    // Contador de tentativas para retry automático
+    private var searchRetryCount = 0
+    private val maxRetries = 3
+    
     /**
      * Atualiza o termo de busca e limpa erros anteriores.
      * 
@@ -57,54 +71,90 @@ class MovieViewModel : ViewModel() {
     }
     
     /**
-     * Busca filmes na API OMDb com validação de entrada.
+     * Busca filmes na API OMDb com validação de entrada e retry automático.
      * 
      * Funcionalidades:
      * - Valida se a query tem pelo menos 2 caracteres
      * - Faz trim() para remover espaços
      * - Trata diferentes tipos de erros de rede
+     * - Retry automático em caso de falha de rede
      * - Atualiza estados reativo de loading e erro
      */
     fun searchMovies() {
         val trimmedQuery = query.trim()
         if (trimmedQuery.isBlank()) {
             errorMessage = "Digite um título para buscar"
+            movieState = MovieState.Error("Digite um título para buscar")
             return
         }
         
         if (trimmedQuery.length < 2) {
             errorMessage = "Digite pelo menos 2 caracteres"
+            movieState = MovieState.Error("Digite pelo menos 2 caracteres")
             return
         }
         
+        searchRetryCount = 0
+        performSearch(trimmedQuery)
+    }
+    
+    /**
+     * Executa a busca com retry automático
+     */
+    private fun performSearch(query: String) {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
+            movieState = MovieState.Loading
             
             try {
-                val response = RetrofitClient.movieApi.searchMovies(query = trimmedQuery)
+                val response = RetrofitClient.movieApi.searchMovies(query = query)
                 
                 if (response.response == "True") {
-                    movies = response.search ?: emptyList()
-                    if (movies.isEmpty()) {
+                    val movieList = response.search ?: emptyList()
+                    movies = movieList
+                    movieState = MovieState.Success(movieList)
+                    
+                    if (movieList.isEmpty()) {
                         errorMessage = "Nenhum resultado encontrado para \"$query\""
+                        movieState = MovieState.Error("Nenhum resultado encontrado")
                     }
+                    searchRetryCount = 0 // Reset counter on success
                 } else {
-                    errorMessage = response.error ?: "Erro na busca"
+                    val error = response.error ?: "Erro na busca"
+                    errorMessage = error
                     movies = emptyList()
+                    movieState = MovieState.Error(error)
                 }
             } catch (e: java.net.UnknownHostException) {
-                errorMessage = "Erro de conexão. Verifique sua internet."
-                movies = emptyList()
+                handleNetworkError("Erro de conexão. Verifique sua internet.", query)
             } catch (e: java.net.SocketTimeoutException) {
-                errorMessage = "Timeout na conexão. Tente novamente."
-                movies = emptyList()
+                handleNetworkError("Timeout na conexão.", query)
             } catch (e: Exception) {
-                errorMessage = "Erro inesperado: ${e.message}"
+                val error = "Erro inesperado: ${e.message}"
+                errorMessage = error
                 movies = emptyList()
+                movieState = MovieState.Error(error)
             } finally {
                 isLoading = false
             }
+        }
+    }
+    
+    /**
+     * Trata erros de rede com retry automático
+     */
+    private suspend fun handleNetworkError(message: String, query: String) {
+        if (searchRetryCount < maxRetries) {
+            searchRetryCount++
+            errorMessage = "$message Tentativa $searchRetryCount/$maxRetries..."
+            delay(2000) // Aguarda 2 segundos antes de tentar novamente
+            performSearch(query)
+        } else {
+            errorMessage = "$message Todas as tentativas falharam."
+            movies = emptyList()
+            movieState = MovieState.Error(message)
+            searchRetryCount = 0
         }
     }
     
