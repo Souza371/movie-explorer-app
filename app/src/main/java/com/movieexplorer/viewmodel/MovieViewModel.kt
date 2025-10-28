@@ -159,29 +159,59 @@ class MovieViewModel : ViewModel() {
     }
     
     /**
-     * Obtém detalhes completos de um filme
+     * Obtém detalhes completos de um filme com retry automático
      */
     fun getMovieDetails(imdbId: String) {
         viewModelScope.launch {
             isLoadingDetails = true
+            movieDetailsState = MovieDetailsState.Loading
             
-            try {
-                val details = RetrofitClient.movieApi.getMovieDetails(imdbId = imdbId)
-                
-                if (details.response == "True") {
-                    selectedMovie = details
-                } else {
-                    errorMessage = "Erro ao carregar detalhes do filme"
+            var detailsRetryCount = 0
+            var success = false
+            
+            while (!success && detailsRetryCount <= maxRetries) {
+                try {
+                    val details = RetrofitClient.movieApi.getMovieDetails(imdbId = imdbId)
+                    
+                    if (details.response == "True") {
+                        selectedMovie = details
+                        movieDetailsState = MovieDetailsState.Success(details)
+                        success = true
+                    } else {
+                        val error = "Erro ao carregar detalhes do filme"
+                        errorMessage = error
+                        movieDetailsState = MovieDetailsState.Error(error)
+                        break
+                    }
+                } catch (e: java.net.UnknownHostException) {
+                    detailsRetryCount++
+                    if (detailsRetryCount <= maxRetries) {
+                        errorMessage = "Erro de conexão. Tentativa $detailsRetryCount/$maxRetries..."
+                        delay(1500)
+                    } else {
+                        val error = "Erro de conexão ao carregar detalhes"
+                        errorMessage = error
+                        movieDetailsState = MovieDetailsState.Error(error)
+                    }
+                } catch (e: java.net.SocketTimeoutException) {
+                    detailsRetryCount++
+                    if (detailsRetryCount <= maxRetries) {
+                        errorMessage = "Timeout. Tentativa $detailsRetryCount/$maxRetries..."
+                        delay(1500)
+                    } else {
+                        val error = "Timeout ao carregar detalhes"
+                        errorMessage = error
+                        movieDetailsState = MovieDetailsState.Error(error)
+                    }
+                } catch (e: Exception) {
+                    val error = "Erro inesperado ao carregar detalhes: ${e.message}"
+                    errorMessage = error
+                    movieDetailsState = MovieDetailsState.Error(error)
+                    break
                 }
-            } catch (e: java.net.UnknownHostException) {
-                errorMessage = "Erro de conexão ao carregar detalhes"
-            } catch (e: java.net.SocketTimeoutException) {
-                errorMessage = "Timeout ao carregar detalhes. Tente novamente."
-            } catch (e: Exception) {
-                errorMessage = "Erro inesperado ao carregar detalhes: ${e.message}"
-            } finally {
-                isLoadingDetails = false
             }
+            
+            isLoadingDetails = false
         }
     }
     
@@ -190,6 +220,7 @@ class MovieViewModel : ViewModel() {
      */
     fun clearSelectedMovie() {
         selectedMovie = null
+        movieDetailsState = MovieDetailsState.Idle
     }
     
     /**
@@ -197,5 +228,27 @@ class MovieViewModel : ViewModel() {
      */
     fun clearError() {
         errorMessage = null
+    }
+    
+    /**
+     * Limpa todos os estados e dados
+     */
+    fun clearAllData() {
+        movies = emptyList()
+        query = ""
+        selectedMovie = null
+        errorMessage = null
+        movieState = MovieState.Idle
+        movieDetailsState = MovieDetailsState.Idle
+        searchRetryCount = 0
+    }
+    
+    /**
+     * Força uma nova busca (útil para pull-to-refresh)
+     */
+    fun forceRefresh() {
+        if (query.isNotBlank()) {
+            searchMovies()
+        }
     }
 }
