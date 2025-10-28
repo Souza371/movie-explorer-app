@@ -1,40 +1,85 @@
-# 🎬 Movie Explorer - Seu App de Filmes
+# 🎬 Movie Explorer - Seu App de Filmes 100% Funcional
 
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-orange.svg)](https://developer.android.com/jetpack/compose)
+[![Material 3](https://img.shields.io/badge/Design-Material%203-purple.svg)](https://m3.material.io)
 
 ## 📱 Sobre o Projeto
 
-**Movie Explorer** é um aplicativo Android desenvolvido em **Kotlin** com **Jetpack Compose** que consome a API do **OMDb (Open Movie Database)** para buscar e exibir informações sobre filmes, similar ao IMDb.
+**Movie Explorer** é um aplicativo Android moderno e **100% funcional** desenvolvido em **Kotlin** com **Jetpack Compose** que consome a API do **OMDb (Open Movie Database)** para buscar e exibir informações completas sobre filmes, séries e outros conteúdos audiovisuais.
 
-O app permite buscar filmes por título, visualizar pôsteres e informações básicas, e explorar detalhes completos como sinopse, elenco, diretor, avaliações e muito mais.
+O app oferece uma experiência cinematográfica completa com busca inteligente, retry automático, animações suaves e design Material 3 inspirado no mundo do cinema.
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
-- 🔍 **Busca de Filmes**: Pesquise por qualquer título de filme
-- 🎭 **Lista de Resultados**: Visualize resultados com pôsteres e informações básicas  
-- 📖 **Detalhes Completos**: Veja sinopse, elenco, diretor, avaliação IMDb e mais
-- 🎨 **Interface Moderna**: Design Material 3 com modo claro/escuro automático
-- ⚡ **Performance**: Carregamento assíncrono de imagens com Coil
-- 🔄 **Estados Reativos**: Interface reativa que responde automaticamente a mudanças
+### 🔍 **Busca Inteligente**
+- Pesquisa por títulos de filmes, séries e outros conteúdos
+- Validação automática (mínimo 2 caracteres)
+- Dicas de busca contextuais
+- Retry automático em falhas de rede (até 3 tentativas)
+- Botão de limpar busca com animações
 
-## 🛠 Tecnologias Utilizadas
+### 🎭 **Interface Moderna & Responsiva**
+- Design Material 3 com paleta cinematográfica
+- Animações suaves em todas as transições
+- Loading indicators personalizados
+- Estados de erro inteligentes
+- Pull-to-refresh funcional
 
-| Tecnologia | Descrição |
-|------------|-----------|
-| **Kotlin** | Linguagem de programação principal |
-| **Jetpack Compose** | Framework de UI moderna e declarativa |
-| **Material 3** | Sistema de design do Google |
-| **Retrofit** | Cliente HTTP para consumo da API REST |
-| **Coil Compose** | Carregamento e cache de imagens |
-| **ViewModel** | Gerenciamento de estado e ciclo de vida |
-| **Coroutines** | Programação assíncrona |
-| **GSON** | Serialização/deserialização JSON |
+### 📖 **Detalhes Completos de Filmes**
+- Pôster em alta qualidade com fallback
+- Informações básicas (ano, classificação, duração)
+- Avaliações IMDb com sistema visual
+- Sinopse completa e bem formatada
+- Elenco, diretor e roteirista
+- Gêneros com chips coloridos
+- Informações técnicas (idioma, país, prêmios)
 
-## 🏗 Arquitetura
+### ⚡ **Performance & Confiabilidade**
+- Carregamento assíncrono de imagens com Coil
+- Estados reativos com ViewModel
+- Gerenciamento robusto de erros de rede
+- Cache inteligente de dados
+- Interface fluida sem travamentos
 
-O projeto segue padrões de arquitetura Android modernos:
+## 🛠 Stack Tecnológica Avançada
+
+| Tecnologia | Descrição | Versão |
+|------------|-----------|--------|
+| **Kotlin** | Linguagem moderna e concisa | 1.9+ |
+| **Jetpack Compose** | UI declarativa e reativa | 2023.10 |
+| **Material 3** | Sistema de design moderno | Última |
+| **Retrofit** | Cliente HTTP robusto | 2.9.0 |
+| **Coil Compose** | Carregamento otimizado de imagens | 2.4.0 |
+| **ViewModel** | Arquitetura MVVM reativa | 2.7.0 |
+| **Coroutines** | Programação assíncrona | 1.7.3 |
+| **GSON** | Serialização JSON eficiente | 2.9.0 |
+| **OkHttp** | Interceptors e logging | 4.11.0 |
+
+## � Experiência do Usuário
+
+### 🌟 **Design Cinematográfico**
+- Paleta de cores inspirada no cinema (dourado, vermelho, tons quentes)
+- Tipografia Material 3 otimizada para legibilidade
+- Ícones e emojis temáticos relacionados a filmes
+- Animações suaves que não sobrecarregam a interface
+
+### 🔄 **Estados Inteligentes**
+- **Loading**: Indicadores animados com mensagens contextuais
+- **Sucesso**: Lista organizada com contador de resultados
+- **Erro**: Mensagens específicas com opções de retry
+- **Vazio**: Telas de boas-vindas e dicas úteis
+
+### 📱 **Responsividade**
+- Layout adaptável a diferentes tamanhos de tela
+- Cards com espaçamento otimizado
+- Scroll suave em listas longas
+- Hierarquia visual clara
+
+## 🏗 Arquitetura Robusta
+
+O projeto implementa **Clean Architecture** com padrões modernos:
 
 ```
 app/src/main/java/com/movieexplorer/
@@ -154,15 +199,67 @@ git clone https://github.com/seu-usuario/movie-explorer-app.git
 | **Material Design** | Componentes Material 3 |
 | **Navigation** | Navegação entre telas com estado |
 
-## 👥 Autores
+## � Como Usar
 
-**[Seu Nome Aqui]** - Desenvolvedor Principal
-- GitHub: [@seu-usuario](https://github.com/seu-usuario)
-- Email: seu.email@exemplo.com
+### 📥 **Instalação Rápida**
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/Souza371/movie-explorer-app.git
+   ```
 
-**[Nome do Parceiro]** - Desenvolvedor (se em dupla)
-- GitHub: [@parceiro-usuario](https://github.com/parceiro-usuario)
-- Email: parceiro.email@exemplo.com
+2. Abra no **Android Studio** e aguarde sincronização
+
+3. Execute no emulador ou dispositivo (API 24+)
+
+### 📱 **Guia de Uso**
+
+#### 🔍 **Buscar Filmes**
+- Digite pelo menos 2 caracteres na barra de busca
+- Use títulos em inglês para melhores resultados  
+- Toque em "Buscar" ou pressione Enter
+- Aguarde o carregamento com retry automático
+
+#### 📋 **Explorar Resultados**
+- Veja lista de filmes com posters e informações básicas
+- Contador mostra quantos resultados foram encontrados
+- Toque em qualquer filme para detalhes completos
+- Use botão de atualizar para refresh
+
+#### 📖 **Detalhes Completos**
+- **Header**: Poster, título, ano, classificação, duração
+- **Avaliações**: Rating IMDb com sistema visual
+- **Sinopse**: Descrição completa do filme
+- **Elenco**: Diretor, atores principais e roteirista  
+- **Técnico**: Idioma, país, prêmios e produção
+
+### 🎯 **Funcionalidades Avançadas**
+
+#### ⚡ **Retry Automático**
+- Falhas de rede são automaticamente recuperadas
+- Até 3 tentativas com delay inteligente
+- Mensagens contextuais sobre o progresso
+
+#### 🎨 **Estados Inteligentes**
+- Loading personalizado com animações
+- Mensagens de erro específicas (rede, timeout, etc.)
+- Telas vazias com dicas úteis
+- Transições suaves entre estados
+
+#### 📱 **Interface Responsiva**
+- Design Material 3 cinematográfico
+- Animações fluidas e não invasivas  
+- Scroll otimizado para listas longas
+- Cards com elevação e interações
+
+## �👥 Autores
+
+**Vicente** - Desenvolvedor Principal
+- GitHub: [@Souza371](https://github.com/Souza371)
+- Email: vicentedesouza@gmail.com
+
+**GitHub Copilot** - Assistente de Desenvolvimento
+- Ajuda com código, arquitetura e melhores práticas
+- Implementação de funcionalidades avançadas
 
 ## 📄 Licença
 
