@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.movieexplorer.R
 import com.movieexplorer.viewmodel.MovieViewModel
+import com.movieexplorer.ui.components.*
 
 /**
  * Tela principal que orquestra a UI do aplicativo.
@@ -64,13 +65,36 @@ private fun SearchContent(viewModel: MovieViewModel) {
             // Conteúdo central que muda com base no estado
             when {
                 isLoading -> {
-                    LoadingState(stringResource(R.string.loading_movies))
+                    MovieLoadingIndicator(
+                        message = "Buscando filmes para \"$query\"..."
+                    )
                 }
                 errorMessage != null -> {
-                    ErrorState(errorMessage)
+                    if (errorMessage.contains("conexão") || errorMessage.contains("internet")) {
+                        NetworkErrorMessage(
+                            message = errorMessage,
+                            onRetry = { viewModel.forceRefresh() }
+                        )
+                    } else if (movies.isEmpty() && errorMessage.contains("Nenhum resultado")) {
+                        NoResultsFound(
+                            query = query,
+                            onClear = { viewModel.clearAllData() }
+                        )
+                    } else {
+                        GenericErrorMessage(
+                            message = errorMessage,
+                            onRetry = { viewModel.forceRefresh() }
+                        )
+                    }
                 }
                 movies.isEmpty() && query.isBlank() -> {
                     InitialState()
+                }
+                movies.isEmpty() && query.isNotBlank() -> {
+                    NoResultsFound(
+                        query = query,
+                        onClear = { viewModel.clearAllData() }
+                    )
                 }
                 else -> {
                     MovieList(
@@ -90,14 +114,29 @@ private fun SearchContent(viewModel: MovieViewModel) {
 private fun DetailsContent(viewModel: MovieViewModel) {
     val selectedMovie = viewModel.selectedMovie
     val isLoadingDetails = viewModel.isLoadingDetails
+    val errorMessage = viewModel.errorMessage
 
-    if (isLoadingDetails) {
-        LoadingState(stringResource(R.string.loading_details))
-    } else if (selectedMovie != null) {
-        MovieDetailsScreen(
-            movieDetails = selectedMovie,
-            onBackClick = { viewModel.clearSelectedMovie() }
-        )
+    when {
+        isLoadingDetails -> {
+            FullScreenLoading(message = "Carregando detalhes do filme...")
+        }
+        selectedMovie != null -> {
+            MovieDetailsScreen(
+                movieDetails = selectedMovie,
+                onBackClick = { viewModel.clearSelectedMovie() }
+            )
+        }
+        errorMessage != null -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                GenericErrorMessage(
+                    message = errorMessage,
+                    onRetry = { viewModel.clearSelectedMovie() }
+                )
+            }
+        }
     }
 }
 
