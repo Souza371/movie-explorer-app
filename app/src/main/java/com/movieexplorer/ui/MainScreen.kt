@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.movieexplorer.R
 import com.movieexplorer.viewmodel.MovieViewModel
 import com.movieexplorer.ui.components.*
+import com.movieexplorer.ui.theme.ThemeMode
 import com.movieexplorer.util.MovieState
 
 /**
@@ -30,13 +31,18 @@ import com.movieexplorer.util.MovieState
 fun MainScreen(viewModel: MovieViewModel = viewModel()) {
     val selectedMovie = viewModel.selectedMovie
     val isLoadingDetails = viewModel.isLoadingDetails
+    
+    // 🌿🌻 Estado do tema brasileiro - Por: Vicente de Souza 🌻🌿
+    var currentTheme by remember { mutableStateOf(ThemeMode.BRAZILIAN_FESTIVAL) }
 
     // Se um filme for selecionado, mostra a tela de detalhes ou seu estado de carregamento.
     // Caso contrário, mostra a tela de busca principal.
     if (selectedMovie != null || isLoadingDetails) {
         DetailsContent(viewModel)
     } else {
-        SearchContent(viewModel)
+        SearchContent(viewModel, currentTheme) { newTheme ->
+            currentTheme = newTheme
+        }
     }
 }
 
@@ -45,7 +51,11 @@ fun MainScreen(viewModel: MovieViewModel = viewModel()) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SearchContent(viewModel: MovieViewModel) {
+private fun SearchContent(
+    viewModel: MovieViewModel,
+    currentTheme: ThemeMode,
+    onThemeChange: (ThemeMode) -> Unit
+) {
     val movies = viewModel.movies
     val query = viewModel.query
     val isLoading = viewModel.isLoading
@@ -98,7 +108,7 @@ private fun SearchContent(viewModel: MovieViewModel) {
                     }
                 }
                 movies.isEmpty() && query.isBlank() -> {
-                    InitialState()
+                    InitialState(currentTheme, onThemeChange)
                 }
                 movies.isEmpty() && query.isNotBlank() -> {
                     NoResultsFound(
@@ -171,7 +181,10 @@ private fun LoadingState(message: String) {
  * Composable para o estado inicial, antes de qualquer busca.
  */
 @Composable
-private fun InitialState() {
+private fun InitialState(
+    currentTheme: ThemeMode,
+    onThemeChange: (ThemeMode) -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -216,6 +229,19 @@ private fun InitialState() {
                     )
                 }
             }
+            
+            Spacer(modifier = Modifier.height(20.dp))
+            
+            // 🎨 Seletor de temas brasileiro - Por: Vicente de Souza
+            BrazilianThemeSelector(
+                currentTheme = currentTheme,
+                onThemeChange = onThemeChange
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // 🌟 Créditos do criador
+            BrazilianCredits()
         }
     }
 }
