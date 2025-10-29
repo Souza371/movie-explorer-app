@@ -10,73 +10,95 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = MovieGold,
-    onPrimary = MovieDarkBlue,
-    secondary = AccentOrange,
-    onSecondary = MovieDarkBlue,
-    tertiary = AccentPurple,
-    onTertiary = LightGray,
-    background = MovieDarkBlue,
+// 🌙 Tema escuro com verde e amarelo vibrantes
+val DarkColorScheme = darkColorScheme(
+    primary = BrazilGreen,              // Verde Brasil como cor principal
+    onPrimary = androidx.compose.ui.graphics.Color.White,
+    secondary = BrazilYellow,           // Amarelo Brasil como secundária
+    onSecondary = DeepForestGreen,
+    tertiary = TropicalGreen,           // Verde tropical como terciária
+    onTertiary = androidx.compose.ui.graphics.Color.White,
+    background = DeepForestGreen,       // Fundo verde escuro
     onBackground = LightGray,
-    surface = MovieBlue,
+    surface = EmeraldDark,              // Superfícies em verde esmeralda
     onSurface = LightGray,
-    surfaceVariant = MovieLightBlue,
-    onSurfaceVariant = NeutralGray,
+    surfaceVariant = DarkGolden,        // Variações em dourado escuro
+    onSurfaceVariant = CreamYellow,
     error = ErrorRed,
-    onError = LightGray
+    onError = androidx.compose.ui.graphics.Color.White
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = MovieRed,
-    onPrimary = LightGray,
-    secondary = AccentOrange,
-    onSecondary = LightGray,
-    tertiary = AccentPurple,
-    onTertiary = LightGray,
-    background = LightGray,
+// ☀️ Tema claro com verde e amarelo suaves
+val LightColorScheme = lightColorScheme(
+    primary = TropicalGreen,            // Verde tropical brilhante
+    onPrimary = androidx.compose.ui.graphics.Color.White,
+    secondary = SunshineYellow,         // Amarelo sol radiante
+    onSecondary = DeepForestGreen,
+    tertiary = LimeGreen,               // Verde limão fresco
+    onTertiary = androidx.compose.ui.graphics.Color.White,
+    background = CreamYellow,           // Fundo amarelo creme suave
     onBackground = DarkGray,
     surface = androidx.compose.ui.graphics.Color.White,
     onSurface = DarkGray,
-    surfaceVariant = androidx.compose.ui.graphics.Color(0xFFF5F5F5),
-    onSurfaceVariant = NeutralGray,
+    surfaceVariant = PaleGreen,         // Variações em verde pálido
+    onSurfaceVariant = EmeraldDark,
     error = ErrorRed,
-    onError = LightGray
+    onError = androidx.compose.ui.graphics.Color.White
 )
 
 @Composable
 fun MovieExplorerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false, // Desabilitado para usar nosso tema personalizado
+    themeMode: ThemeMode = ThemeMode.AUTO,
     content: @Composable () -> Unit
 ) {
+    val themeState = rememberMovieThemeState(themeMode)
+    
     val colorScheme = when {
+        // Sempre usar nosso tema personalizado brasileiro
+        themeMode == ThemeMode.BRAZILIAN_FESTIVAL -> BrazilianFestivalColorScheme
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
+        darkTheme || themeMode == ThemeMode.DARK -> DarkColorScheme
         else -> LightColorScheme
     }
+    
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            // Status bar com cor brasileira
+            window.statusBarColor = when (themeMode) {
+                ThemeMode.BRAZILIAN_FESTIVAL -> BrazilYellow.toArgb()
+                else -> colorScheme.primary.toArgb()
+            }
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = 
+                when (themeMode) {
+                    ThemeMode.DARK -> false
+                    ThemeMode.BRAZILIAN_FESTIVAL -> true
+                    else -> !darkTheme
+                }
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    // Provedor do estado do tema
+    CompositionLocalProvider(
+        LocalMovieThemeState provides themeState
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

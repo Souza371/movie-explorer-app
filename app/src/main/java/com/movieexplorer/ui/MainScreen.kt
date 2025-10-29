@@ -51,16 +51,18 @@ private fun SearchContent(viewModel: MovieViewModel) {
     val isLoading = viewModel.isLoading
     val errorMessage = viewModel.errorMessage
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
-    ) { padding ->
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // 🌿🌻 Header brasileiro personalizado 🌻🌿
+        BrazilianMovieHeader()
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             SearchBar(
                 query = query,
@@ -174,21 +176,46 @@ private fun InitialState() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = stringResource(R.string.welcome_emoji), style = MaterialTheme.typography.displayLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.welcome_title),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.welcome_subtitle),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Componente brasileiro de boas-vindas
+            BrazilianWelcomeMessage()
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Mensagem adicional com emojis brasileiros
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Digite o nome de um filme na barra de busca acima",
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Text(
+                        text = "🔍 Batman • Avengers • Star Wars • Matrix 🎬",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
     }
 }

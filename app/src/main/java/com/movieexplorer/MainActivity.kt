@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.movieexplorer.ui.MainScreen
 import com.movieexplorer.ui.theme.MovieExplorerTheme
+import com.movieexplorer.ui.theme.ThemeMode
 
 /**
  * Atividade principal do aplicativo
@@ -20,7 +21,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         
         setContent {
-            MovieExplorerTheme {
+            // 🌿🌻 Usando o tema brasileiro verde e amarelo! 🌻🌿
+            MovieExplorerTheme(
+                themeMode = ThemeMode.BRAZILIAN_FESTIVAL
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

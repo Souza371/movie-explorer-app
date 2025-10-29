@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme for night mode. -->
+    <!-- 🌙 Tema brasileiro modo escuro 🌙 -->
     <style name="Base.Theme.MovieExplorer" parent="android:Theme.Holo">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Cores primárias brasileiras modo escuro -->
+        <item name="android:colorPrimary">@color/brazil_green</item>
+        <item name="android:colorPrimaryDark">@color/deep_forest_green</item>
+        <item name="android:colorAccent">@color/brazil_yellow</item>
+        
+        <!-- Cores de background escuro -->
+        <item name="android:windowBackground">@color/deep_forest_green</item>
+        <item name="android:colorBackground">@color/emerald_dark</item>
+        
+        <!-- Cores de texto para modo escuro -->
+        <item name="android:textColorPrimary">@color/light_gray</item>
+        <item name="android:textColorSecondary">@color/cream_yellow</item>
     </style>
 </resources>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Tema base do Movie Explorer com cores personalizadas -->
+    <!-- 🌿🌻 Tema brasileiro do Movie Explorer 🌻🌿 -->
     <style name="Base.Theme.MovieExplorer" parent="android:Theme.Holo.Light">
-        <!-- Cores primárias inspiradas em temas de cinema -->
-        <item name="android:colorPrimary">@color/movie_primary</item>
-        <item name="android:colorPrimaryDark">@color/movie_primary_variant</item>
-        <item name="android:colorAccent">@color/movie_secondary</item>
+        <!-- Cores primárias brasileiras -->
+        <item name="android:colorPrimary">@color/brazil_green</item>
+        <item name="android:colorPrimaryDark">@color/deep_forest_green</item>
+        <item name="android:colorAccent">@color/brazil_yellow</item>
         
         <!-- Cores de background -->
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowBackground">@color/cream_yellow</item>
+        <item name="android:colorBackground">@color/cream_yellow</item>
         
         <!-- Cores de texto -->
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/gray_dark</item>
+        <item name="android:textColorPrimary">@color/dark_gray</item>
+        <item name="android:textColorSecondary">@color/neutral_gray</item>
     </style>
 
     <style name="Theme.MovieExplorer" parent="Base.Theme.MovieExplorer" />

@@ -3,7 +3,9 @@ package com.movieexplorer.ui
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +18,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.movieexplorer.data.Movie
+import com.movieexplorer.ui.theme.*
 
 /**
  * Card aprimorado para exibir informações de um filme
@@ -38,30 +43,57 @@ fun MovieCard(
     modifier: Modifier = Modifier
 ) {
     var isPressed by remember { mutableStateOf(false) }
+    var isHovered by remember { mutableStateOf(false) }
+    
+    // Animação de escala suave
+    val scale by animateFloatAsState(
+        targetValue = if (isHovered) 1.02f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+    )
     
     Card(
         modifier = modifier
             .fillMaxWidth()
+            .scale(scale)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
                     stiffness = Spring.StiffnessLow
                 )
             )
-            .clickable { onClick() },
+            .clickable { 
+                isPressed = true
+                onClick() 
+            },
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isPressed) 8.dp else 4.dp
+            defaultElevation = if (isPressed) 12.dp else 6.dp
         ),
         border = BorderStroke(
-            width = if (isPressed) 2.dp else 0.dp,
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-        )
+            width = if (isPressed) 3.dp else 1.dp,
+            color = TropicalGreen.copy(alpha = if (isPressed) 0.8f else 0.3f)
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Row(
+        // Fundo com gradiente sutil
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.surface,
+                            PaleGreen.copy(alpha = 0.1f),
+                            CreamYellow.copy(alpha = 0.05f)
+                        )
+                    )
+                )
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
             // Container do pôster com bordas arredondadas
             Card(
                 modifier = Modifier
@@ -168,6 +200,7 @@ fun MovieCard(
                     fontWeight = FontWeight.Medium
                 )
             }
+        }
         }
     }
 }

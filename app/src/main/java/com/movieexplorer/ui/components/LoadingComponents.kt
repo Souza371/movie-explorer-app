@@ -2,19 +2,24 @@ package com.movieexplorer.ui.components
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.movieexplorer.ui.theme.*
 
 /**
  * Componente de loading personalizado com animação
@@ -41,43 +46,67 @@ fun MovieLoadingIndicator(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Círculo de loading personalizado
-        Canvas(
+        // Círculo de loading com gradiente brasileiro
+        Box(
             modifier = Modifier
-                .size(48.dp)
-                .rotate(rotationAngle)
+                .size(60.dp)
+                .clip(CircleShape)
+                .background(
+                    Brush.sweepGradient(
+                        colors = listOf(
+                            BrazilGreen,
+                            TropicalGreen,
+                            LimeGreen,
+                            SunshineYellow,
+                            BrazilYellow,
+                            GoldenYellow,
+                            BrazilGreen
+                        )
+                    )
+                ),
+            contentAlignment = Alignment.Center
         ) {
-            val strokeWidth = 4.dp.toPx()
-            drawArc(
-                color = Color(0xFF6200EE),
-                startAngle = 0f,
-                sweepAngle = 270f,
-                useCenter = false,
-                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-            )
+            Canvas(
+                modifier = Modifier
+                    .size(48.dp)
+                    .rotate(rotationAngle)
+            ) {
+                val strokeWidth = 6.dp.toPx()
+                drawArc(
+                    color = androidx.compose.ui.graphics.Color.White,
+                    startAngle = 0f,
+                    sweepAngle = 300f,
+                    useCenter = false,
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                )
+            }
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         
+        // Ícone de filme brasileiro
         Text(
-            text = "🎬",
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 8.dp)
+            text = "🎬🇧🇷",
+            fontSize = 32.sp,
+            modifier = Modifier.padding(bottom = 12.dp)
         )
         
         Text(
             text = message,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
         )
         
-        // Indicador linear de progresso
+        // Indicador linear de progresso brasileiro
         LinearProgressIndicator(
             modifier = Modifier
-                .padding(top = 16.dp)
-                .width(200.dp)
+                .padding(top = 20.dp)
+                .width(250.dp)
+                .clip(CircleShape),
+            color = TropicalGreen,
+            trackColor = BrazilYellow.copy(alpha = 0.3f)
         )
     }
 }
