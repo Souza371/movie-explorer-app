@@ -48,6 +48,23 @@
     <string name="rating_label">Classificação</string>
     <string name="release_label">Lançamento</string>
     
+    <!-- Mensagens de busca -->
+    <string name="search_empty_query">Digite um título para buscar</string>
+    <string name="search_min_characters">Digite pelo menos 2 caracteres</string>
+    
+    <!-- Estados de carregamento -->
+    <string name="retry_search">Tentar novamente</string>
+    <string name="clear_search">Limpar busca</string>
+    
+    <!-- Informações não disponíveis -->
+    <string name="info_not_available">Não informado</string>
+    <string name="no_awards">Nenhum prêmio registrado</string>
+    <string name="no_rating">Não classificado</string>
+    
+    <!-- Descrições de conteúdo -->
+    <string name="movie_poster_desc">Pôster do filme</string>
+    <string name="back_button_desc">Voltar</string>
+    
     <!-- Navegação -->
     <string name="back_button">Voltar</string>
     <string name="rating_content_description">Avaliação</string>

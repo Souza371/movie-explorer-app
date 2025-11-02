@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.movieexplorer.data.MovieDetails
 import com.movieexplorer.ui.components.*
+import com.movieexplorer.util.TranslationUtils
 
 /**
  * Tela de detalhes completos e aprimorada do filme
@@ -214,7 +215,7 @@ private fun MovieHeader(movieDetails: MovieDetails) {
                         onClick = { },
                         label = { 
                             Text(
-                                "🎯 $rated",
+                                "🎯 ${TranslationUtils.translateRating(rated)}",
                                 style = MaterialTheme.typography.bodySmall
                             ) 
                         }
@@ -232,7 +233,7 @@ private fun MovieHeader(movieDetails: MovieDetails) {
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = runtime,
+                            text = TranslationUtils.translateRuntime(runtime),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -367,7 +368,7 @@ private fun DetailedInfoSection(movieDetails: MovieDetails) {
                 DetailRow(
                     icon = "🎪",
                     label = "Gêneros",
-                    value = genre
+                    value = TranslationUtils.translateGenre(genre)
                 )
             }
         }
@@ -397,15 +398,15 @@ private fun TechnicalInfoSection(movieDetails: MovieDetails) {
             )
             
             movieDetails.language?.let { language ->
-                TechnicalInfo(label = "Idioma", value = language)
+                TechnicalInfo(label = "Idioma", value = TranslationUtils.translateLanguage(language))
             }
             
             movieDetails.country?.let { country ->
-                TechnicalInfo(label = "País", value = country)
+                TechnicalInfo(label = "País", value = TranslationUtils.translateCountry(country))
             }
             
             movieDetails.awards?.let { awards ->
-                TechnicalInfo(label = "Prêmios", value = awards)
+                TechnicalInfo(label = "Prêmios", value = TranslationUtils.translateAwards(awards))
             }
             
 
