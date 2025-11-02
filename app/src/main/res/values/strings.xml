@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Nome do app -->
-    <string name="app_name">Movie Explorer</string>
+    <string name="app_name">Movie Explorer App</string>
     
     <!-- Tela principal -->
     <string name="welcome_emoji">🎬</string>
-    <string name="welcome_title">Bem-vindo ao Movie Explorer!</string>
+    <string name="welcome_title">Bem-vindo ao Movie Explorer App!</string>
     <string name="welcome_subtitle">Digite o nome de um filme para começar a busca</string>
     
     <!-- Busca -->

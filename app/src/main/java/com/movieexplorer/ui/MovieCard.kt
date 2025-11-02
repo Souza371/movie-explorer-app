@@ -27,10 +27,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.movieexplorer.data.Movie
 import com.movieexplorer.ui.theme.*
+import com.movieexplorer.util.getResponsiveLayout
 
 /**
  * Card aprimorado para exibir informações de um filme
@@ -44,6 +46,9 @@ fun MovieCard(
 ) {
     var isPressed by remember { mutableStateOf(false) }
     var isHovered by remember { mutableStateOf(false) }
+    
+    // Layout responsivo
+    val layout = getResponsiveLayout()
     
     // Animação de escala suave
     val scale by animateFloatAsState(
@@ -92,13 +97,13 @@ fun MovieCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(layout.horizontalPadding.dp)
             ) {
-            // Container do pôster com bordas arredondadas
+            // Container do pôster com bordas arredondadas - responsivo
             Card(
                 modifier = Modifier
-                    .width(90.dp)
-                    .height(135.dp),
+                    .width((layout.cardWidth * 0.6f).dp)
+                    .height((layout.cardWidth * 0.9f).dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -115,7 +120,7 @@ fun MovieCard(
                 )
             }
             
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(layout.horizontalPadding.dp))
             
             // Informações do filme
             Column(
@@ -125,13 +130,13 @@ fun MovieCard(
             ) {
                 Text(
                     text = movie.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    fontSize = layout.titleFontSize.sp,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 2,
+                    maxLines = if (layout.screenSize.name == "SMALL") 1 else 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(layout.verticalSpacing.dp))
                 
                 // Ano com ícone
                 Row(

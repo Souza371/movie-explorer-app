@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.movieexplorer.ui.theme.*
+import com.movieexplorer.util.getResponsiveLayout
 import kotlinx.coroutines.delay
 
 /**
@@ -27,6 +28,9 @@ fun BrazilianSplashScreen(
     onFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Layout responsivo
+    val layout = getResponsiveLayout()
+    
     // Animações coordenadas
     val infiniteTransition = rememberInfiniteTransition(label = "splash")
     
@@ -90,14 +94,14 @@ fun BrazilianSplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Logo principal animado
+            // Logo principal animado - responsivo
             Card(
                 modifier = Modifier
-                    .size(120.dp)
+                    .size((layout.cardWidth * 0.8f).dp)
                     .scale(pulse)
                     .rotate(rotation),
                 elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-                shape = RoundedCornerShape(60.dp)
+                shape = RoundedCornerShape((layout.cardWidth * 0.4f).dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -129,7 +133,7 @@ fun BrazilianSplashScreen(
             
             // Título principal
             Text(
-                text = "Movie Explorer",
+                text = "Movie Explorer App",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = DeepForestGreen,

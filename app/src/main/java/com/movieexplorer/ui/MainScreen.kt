@@ -22,6 +22,7 @@ import com.movieexplorer.viewmodel.MovieViewModel
 import com.movieexplorer.ui.components.*
 import com.movieexplorer.ui.theme.ThemeMode
 import com.movieexplorer.util.MovieState
+import com.movieexplorer.util.getResponsiveLayout
 
 /**
  * Tela principal que orquestra a UI do aplicativo.
@@ -60,6 +61,9 @@ private fun SearchContent(
     val query = viewModel.query
     val isLoading = viewModel.isLoading
     val errorMessage = viewModel.errorMessage
+    
+    // Layout responsivo
+    val layout = getResponsiveLayout()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -70,7 +74,7 @@ private fun SearchContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = layout.horizontalPadding.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
