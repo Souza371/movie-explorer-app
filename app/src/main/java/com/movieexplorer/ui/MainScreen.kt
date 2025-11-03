@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.activity.compose.BackHandler
 import com.movieexplorer.R
 import com.movieexplorer.viewmodel.MovieViewModel
 import com.movieexplorer.ui.components.*
@@ -35,6 +37,38 @@ fun MainScreen(viewModel: MovieViewModel = viewModel()) {
     
     // 🌿🌻 Estado do tema brasileiro - Por: Vicente de Souza 🌻🌿
     var currentTheme by remember { mutableStateOf(ThemeMode.BRAZILIAN_FESTIVAL) }
+    
+    // � Estado para controlar o diálogo de saída
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    // �🔙 Controle inteligente do botão back do Android - Por: Vicente de Souza
+    BackHandler(enabled = true) {
+        when {
+            selectedMovie != null || isLoadingDetails -> {
+                // Volta para a tela principal quando estiver na tela de detalhes
+                viewModel.clearSelectedMovie()
+            }
+            else -> {
+                // Na tela principal, mostra diálogo de confirmação para sair
+                showExitDialog = true
+            }
+        }
+    }
+
+    // 🚪 Diálogo de confirmação de saída
+    if (showExitDialog) {
+        val context = LocalContext.current
+        ExitConfirmationDialog(
+            onConfirmExit = {
+                // Sai do aplicativo
+                val activity = context as? androidx.activity.ComponentActivity
+                activity?.finish()
+            },
+            onDismiss = {
+                showExitDialog = false
+            }
+        )
+    }
 
     // Se um filme for selecionado, mostra a tela de detalhes ou seu estado de carregamento.
     // Caso contrário, mostra a tela de busca principal.
@@ -266,4 +300,60 @@ private fun ErrorState(message: String) {
             textAlign = TextAlign.Center
         )
     }
+}
+
+/**
+ * 🚪 Diálogo de confirmação para sair do app - Por: Vicente de Souza
+ */
+@Composable
+private fun ExitConfirmationDialog(
+    onConfirmExit: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = {
+            Text(
+                text = "Sair do Movie Explorer App?",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = "Tem certeza que deseja sair do aplicativo?\n\nVocê pode continuar explorando filmes incríveis! 🎬",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirmExit,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(
+                    text = "Sair",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = "Continuar no App",
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    )
 }

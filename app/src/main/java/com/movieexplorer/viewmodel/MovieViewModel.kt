@@ -99,7 +99,7 @@ class MovieViewModel : ViewModel() {
     }
     
     /**
-     * Executa a busca com retry automático
+     * Executa a busca com retry automático e melhor tratamento de erros
      */
     private fun performSearch(query: String) {
         viewModelScope.launch {
@@ -108,10 +108,19 @@ class MovieViewModel : ViewModel() {
             movieState = MovieState.Loading
             
             try {
+                // Log para debug
+                println("🔍 Buscando filmes para: '$query'")
+                
                 val response = RetrofitClient.movieApi.searchMovies(query = query)
+                
+                // Log da resposta
+                println("📡 Resposta da API: ${response.response}")
                 
                 if (response.response == "True") {
                     val movieList = response.search ?: emptyList()
+                    
+                    println("🎬 Filmes encontrados: ${movieList.size}")
+                    
                     movies = movieList
                     movieState = MovieState.Success(movieList)
                     
@@ -121,17 +130,39 @@ class MovieViewModel : ViewModel() {
                     }
                     searchRetryCount = 0 // Reset counter on success
                 } else {
-                    val error = response.error ?: "Erro na busca"
-                    errorMessage = error
+                    val error = response.error ?: "Nenhum filme encontrado"
+                    println("❌ Erro da API: $error")
+                    
+                    // Melhor tratamento de mensagens de erro
+                    val userFriendlyError = when {
+                        error.contains("Movie not found") || error.contains("not found") -> 
+                            "Nenhum filme encontrado para \"$query\". Tente outro termo."
+                        error.contains("Too many results") -> 
+                            "Muitos resultados. Seja mais específico na busca."
+                        error.contains("Invalid API") -> 
+                            "Erro de configuração da API. Tente novamente."
+                        else -> "Não foi possível encontrar filmes para \"$query\""
+                    }
+                    
+                    errorMessage = userFriendlyError
                     movies = emptyList()
-                    movieState = MovieState.Error(error)
+                    movieState = MovieState.Error(userFriendlyError)
                 }
             } catch (e: java.net.UnknownHostException) {
-                handleNetworkError("Erro de conexão. Verifique sua internet.", query)
+                println("🌐 Erro de conexão: ${e.message}")
+                handleNetworkError("Sem conexão com a internet. Verifique sua conexão.", query)
             } catch (e: java.net.SocketTimeoutException) {
-                handleNetworkError("Timeout na conexão.", query)
+                println("⏰ Timeout: ${e.message}")
+                handleNetworkError("Conexão muito lenta. Tente novamente.", query)
+            } catch (e: javax.net.ssl.SSLHandshakeException) {
+                println("🔒 Erro SSL: ${e.message}")
+                handleNetworkError("Erro de segurança na conexão.", query)
+            } catch (e: java.io.IOException) {
+                println("📡 Erro de rede: ${e.message}")
+                handleNetworkError("Erro de rede. Verifique sua conexão.", query)
             } catch (e: Exception) {
-                val error = "Erro inesperado: ${e.message}"
+                println("💥 Erro inesperado: ${e.message}")
+                val error = "Erro inesperado. Tente novamente.\nDetalhes: ${e.localizedMessage}"
                 errorMessage = error
                 movies = emptyList()
                 movieState = MovieState.Error(error)

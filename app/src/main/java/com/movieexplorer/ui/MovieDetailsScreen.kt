@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.scale
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.movieexplorer.data.MovieDetails
@@ -58,17 +59,25 @@ fun MovieDetailsScreen(
             animationSpec = tween(500)
         ) + fadeIn(animationSpec = tween(500))
     ) {
-        Column(
-            modifier = modifier.fillMaxSize()
-        ) {
-            // TopBar com gradiente
-            DetailTopBar(
-                title = movieDetails.title ?: "Filme",
-                onBackClick = onBackClick
-            )
+        Box(modifier = modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                // TopBar com gradiente
+                DetailTopBar(
+                    title = movieDetails.title ?: "Filme",
+                    onBackClick = onBackClick
+                )
+                
+                // Conteúdo scrollável
+                DetailContent(movieDetails = movieDetails)
+            }
             
-            // Conteúdo scrollável
-            DetailContent(movieDetails = movieDetails)
+            // 🔙 Botão flutuante adicional de voltar - Por: Vicente de Souza
+            FloatingBackButton(
+                onBackClick = onBackClick,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
+            )
         }
     }
 }
@@ -95,13 +104,22 @@ private fun DetailTopBar(
             IconButton(
                 onClick = onBackClick,
                 modifier = Modifier
+                    .size(48.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f))
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                            )
+                        )
+                    )
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Voltar",
-                    tint = MaterialTheme.colorScheme.primary
+                    contentDescription = "Voltar ao Menu Principal",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
                 )
             }
         },
@@ -471,6 +489,50 @@ private fun DetailRow(icon: String, label: String, value: String) {
                 text = value,
                 style = MaterialTheme.typography.bodyMedium,
                 lineHeight = 20.sp
+            )
+        }
+    }
+}
+
+/**
+ * 🔙 Botão flutuante de voltar - Por: Vicente de Souza
+ */
+@Composable
+private fun FloatingBackButton(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+    )
+    
+    FloatingActionButton(
+        onClick = {
+            isPressed = true
+            onBackClick()
+        },
+        modifier = modifier.scale(scale),
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Voltar",
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Menu",
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
             )
         }
     }
